@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akanksha | Creative Developer</title>
+    <!-- Use standard CSS file instead of tailwind -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Clean, modern san-serif font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- FUTURISTIC INTERACTIVE MESH CANVAS -->
+    <canvas id="bg-canvas" class="interactive-bg"></canvas>
+
+    <!-- SCROLLY CANVAS SEQUENCE: 500vh container -->
+    <section class="hero-sequence">
+        <div class="sticky-container">
+            <!-- HTML5 Video Frame Renderer -->
+            <canvas id="hero-canvas"></canvas>
+
+            <!-- Parallax Typograhpy Overlay -->
+            <div class="overlay" id="overlay">
+
+                <!-- Section 1: Hero (0% - 20% scroll) -->
+                <div class="overlay-section text-center" id="section-1">
+                    <h1 class="title">Akanksha.</h1>
+                    <p class="subtitle">Creative Developer.</p>
+                </div>
+
+                <!-- Section 2: Statement (30% - 50% scroll) -->
+                <div class="overlay-section text-left" id="section-2">
+                    <h2 class="headline">I build digital <br /><span class="dim">experiences.</span></h2>
+                </div>
+
+                <!-- Section 3: Value (60% - 80% scroll) -->
+                <div class="overlay-section text-right" id="section-3">
+                    <h2 class="headline">Bridging design <br /><span class="dim">and engineering.</span></h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about section-overflow">
+        <div class="about-container">
+            <div class="about-content reveal">
+                <div class="floating-badge">Who I Am</div>
+                <h2 class="gradient-text animated-gradient">UI / UX Designer <br>& Frontend Developer</h2>
+                <p class="about-desc">Hello! I am <strong class="glow-text">Aakanksha</strong>, a BCA student obsessed
+                    with building gravity-defying digital experiences and beautiful interfaces.</p>
+            </div>
+
+            <div class="skills-wrapper">
+                <!-- UI/UX -->
+                <div class="skill-card reveal" style="transition-delay: 0.1s">
+                    <div class="skill-icon">✧</div>
+                    <h3>UI / UX Design</h3>
+                    <p class="skill-desc">Crafting intuitive user journeys and pixel-perfect dark mode interfaces. I specialize in wireframing, high-fidelity prototyping, and bringing interactive scrollytelling designs to life.</p>
+                    <div class="skill-tags">
+                        <span>Figma</span>
+                        <span>Framer</span>
+                        <span>Prototyping</span>
+                        <span>Research</span>
+                    </div>
+                </div>
+
+                <!-- Frontend -->
+                <div class="skill-card reveal" style="transition-delay: 0.2s">
+                    <div class="skill-icon">⚡</div>
+                    <h3>Frontend Development</h3>
+                    <p class="skill-desc">Translating beautiful designs into highly performant, accessible, and responsive code. Adept at building complex CSS animations and Canvas-based WebGL experiences.</p>
+                    <div class="skill-tags">
+                        <span>HTML5</span>
+                        <span>CSS3</span>
+                        <span>JavaScript</span>
+                        <span>React</span>
+                    </div>
+                </div>
+
+                <!-- Prompt Engineering -->
+                <div class="skill-card reveal" style="transition-delay: 0.3s">
+                    <div class="skill-icon">🧠</div>
+                    <h3>Prompt Engineering</h3>
+                    <p class="skill-desc">Mastering LLM communication to ultra-accelerate development. Formulating highly specific context architectures to generate robust code and solve complex architectural challenges.</p>
+                    <div class="skill-tags">
+                        <span>ChatGPT</span>
+                        <span>Claude / Flow</span>
+                        <span>Google Gemini</span>
+                        <span>Antigravity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS GRID SHOWCASE: Rendered below sequence -->
+    <section class="projects section-overflow">
+        <div class="projects-container">
+            <div class="projects-header reveal">
+                <h2>Projects</h2>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Card 1 -->
+                <div class="project-card reveal" style="transition-delay: 0.1s">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&w=800&q=80"
+                            alt="App Redesign">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <span class="category">UI / UX</span>
+                            <h3>App Redesign</h3>
+                            <p>A complete interface overhaul prioritizing user workflow and minimalist aesthetics.</p>
+                        </div>
+                        <div class="arrow-btn">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 19L19 5M19 5v10M19 5H9"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="project-card reveal" style="transition-delay: 0.2s">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
+                            alt="E-Commerce Website">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <span class="category">Frontend</span>
+                            <h3>E-Commerce Website</h3>
+                            <p>High-conversion storefront featuring seamless transitions and modern layouts.</p>
+                        </div>
+                        <div class="arrow-btn">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 19L19 5M19 5v10M19 5H9"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="project-card reveal" style="transition-delay: 0.3s">
+                    <div class="project-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
+                            alt="Parallax Effect">
+                    </div>
+                    <div class="project-info">
+                        <div>
+                            <span class="category">Creative Dev</span>
+                            <h3>Parallax Effect</h3>
+                            <p>An immersive scrollytelling experience blending Canvas API with layered depth.</p>
+                        </div>
+                        <div class="arrow-btn">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 19L19 5M19 5v10M19 5H9"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact section-overflow">
+        <div class="contact-container reveal">
+            <h2 class="gradient-text animated-gradient">Let's Work Together</h2>
+            <p>I'm constantly looking for new opportunities to blend design with code. Whether you have a project in
+                mind or just want to connect, feel free to reach out!</p>
+            <a href="mailto:hello@example.com" class="contact-btn">
+                Get In Touch
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                    </path>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>Akanksha.</h3>
+                <p>Creative Developer & UI/UX Designer</p>
+            </div>
+            <div class="footer-social">
+                <a href="#">LinkedIn</a>
+                <a href="#">Dribbble</a>
+                <a href="#">GitHub</a>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Akanksha Portfolio. Crafted with modern web tech.</p>
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="back-to-top">Back to top ↑</button>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
