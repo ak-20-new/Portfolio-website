@@ -15,11 +15,21 @@
 
 <body>
 
+    <!-- GLASSMORPHISM HEADER -->
+    <nav class="glass-header">
+        <div class="nav-links">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#about" class="nav-link">About Me</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#contact" class="nav-link">Contact Me</a>
+        </div>
+    </nav>
+
     <!-- FUTURISTIC INTERACTIVE MESH CANVAS -->
     <canvas id="bg-canvas" class="interactive-bg"></canvas>
 
     <!-- SCROLLY CANVAS SEQUENCE: 500vh container -->
-    <section class="hero-sequence">
+    <section id="home" class="hero-sequence">
         <div class="sticky-container">
             <!-- HTML5 Video Frame Renderer -->
             <canvas id="hero-canvas"></canvas>
@@ -30,7 +40,7 @@
                 <!-- Section 1: Hero (0% - 20% scroll) -->
                 <div class="overlay-section text-center" id="section-1">
                     <h1 class="title">Akanksha.</h1>
-                    <p class="subtitle">Creative Developer.</p>
+                    <p class="subtitle">UI/UX Designer.</p>
                 </div>
 
                 <!-- Section 2: Statement (30% - 50% scroll) -->
@@ -47,7 +57,7 @@
     </section>
 
     <!-- ABOUT SECTION -->
-    <section class="about section-overflow">
+    <section id="about" class="about section-overflow">
         <div class="about-container">
             <div class="about-content reveal">
                 <div class="floating-badge">Who I Am</div>
@@ -174,7 +184,7 @@
     </section>
 
     <!-- PROJECTS GRID SHOWCASE: Rendered below sequence -->
-    <section class="projects section-overflow">
+    <section id="projects" class="projects section-overflow">
         <div class="projects-container">
             <div class="projects-header reveal">
                 <h2>Projects</h2>
@@ -182,16 +192,20 @@
 
             <div class="projects-grid">
                 <!-- Card 1 -->
-                <div class="project-card reveal" style="transition-delay: 0.1s">
+                <div class="project-card reveal" style="transition-delay: 0.1s"
+                    onclick="window.open('https://www.figma.com/design/ZAq9wjEAoYhfulGee6GSP5/App-Redesign?node-id=0-1&t=XtM8qfhBprcUu3MR-1', '_blank')"
+                    role="button" tabindex="0">
                     <div class="project-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&w=800&q=80"
-                            alt="App Redesign">
+                            alt="Figma App Designs">
                     </div>
                     <div class="project-info">
                         <div>
-                            <span class="category">UI / UX</span>
-                            <h3>App Redesign</h3>
-                            <p>A complete interface overhaul prioritizing user workflow and minimalist aesthetics.</p>
+                            <span class="category">UI / UX DESIGN</span>
+                            <h3>Figma App Designs</h3>
+                            <p>Designing modern mobile app interfaces in Figma inspired by real-world platforms like
+                                Netflix, Myntra, and Instagram — focusing on clean layouts, user flow, and visual
+                                consistency.</p>
                         </div>
                         <div class="arrow-btn">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,16 +217,19 @@
                 </div>
 
                 <!-- Card 2 -->
-                <div class="project-card reveal" style="transition-delay: 0.2s">
+                <div class="project-card reveal" style="transition-delay: 0.2s"
+                    onclick="window.open('https://www.figma.com/design/YxEFoi7gN3EfTnXET2mPUZ/Parallex-effect?node-id=112-51&t=cIloWfLBKDQr2KuJ-1', '_blank')"
+                    role="button" tabindex="0">
                     <div class="project-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
-                            alt="E-Commerce Website">
+                            alt="Parallax UI Concepts">
                     </div>
                     <div class="project-info">
                         <div>
-                            <span class="category">Frontend</span>
-                            <h3>E-Commerce Website</h3>
-                            <p>High-conversion storefront featuring seamless transitions and modern layouts.</p>
+                            <span class="category">INTERACTIVE DESIGN</span>
+                            <h3>Parallax UI Concepts</h3>
+                            <p>Creating immersive parallax and motion-based UI concepts in Figma, exploring depth,
+                                transitions, and engaging user experiences without code.</p>
                         </div>
                         <div class="arrow-btn">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,16 +241,19 @@
                 </div>
 
                 <!-- Card 3 -->
-                <div class="project-card reveal" style="transition-delay: 0.3s">
+                <div class="project-card reveal" style="transition-delay: 0.3s"
+                    onclick="window.open('https://www.figma.com/design/dTryt0SzhdvkfVxCIX9QPG/More-Projects?node-id=0-1&t=XZD8luSqvxUuR8YO-1', '_blank')"
+                    role="button" tabindex="0">
                     <div class="project-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
-                            alt="Parallax Effect">
+                            alt="Figma Design Explorations">
                     </div>
                     <div class="project-info">
                         <div>
-                            <span class="category">Creative Dev</span>
-                            <h3>Parallax Effect</h3>
-                            <p>An immersive scrollytelling experience blending Canvas API with layered depth.</p>
+                            <span class="category">CREATIVE DEV</span>
+                            <h3>Figma Design Explorations</h3>
+                            <p>Showcasing a range of UI explorations in Figma — focusing on visual systems, usability,
+                                and refined interface design across multiple concepts.</p>
                         </div>
                         <div class="arrow-btn">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -248,14 +268,14 @@
                 <div class="project-card reveal" style="transition-delay: 0.4s">
                     <div class="project-img-wrapper">
                         <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80"
-                            alt="AI Generated Website">
+                            alt="AI-Powered Web Concepts">
                     </div>
                     <div class="project-info">
                         <div>
-                            <span class="category">AI / Prompt Eng</span>
-                            <h3>Website created by AI</h3>
-                            <p>A futuristic platform entirely conceptualized and generated using advanced LLM prompts.
-                            </p>
+                            <span class="category">AI / PROMPT ENG</span>
+                            <h3>AI-Powered Web Concepts</h3>
+                            <p>Leveraging AI to design and generate real-world website experiences — blending
+                                creativity, automation, and modern UI trends into production-ready concepts.</p>
                         </div>
                         <div class="arrow-btn">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -271,7 +291,7 @@
     </section>
 
     <!-- CONTACT SECTION -->
-    <section class="contact section-overflow">
+    <section id="contact" class="contact section-overflow">
         <div class="contact-container reveal">
             <h2 class="gradient-text animated-gradient">Let's Work Together</h2>
             <p>I'm constantly looking for new opportunities to blend design with code. Whether you have a project in

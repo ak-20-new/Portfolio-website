@@ -208,15 +208,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ==========================================
-    // 5. FUTURISTIC NEON WAVE GRID (CANVAS)
+    // 5. FUTURISTIC ANTI-GRAVITY CANVAS
     // ==========================================
     const bgCanvas = document.getElementById("bg-canvas");
     if (bgCanvas) {
         const ctx = bgCanvas.getContext("2d");
         let cw, ch;
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let time = 0;
+        // Offscreen default
+        let mouseX = -1000;
+        let mouseY = -1000;
+        let targetMouseX = -1000;
+        let targetMouseY = -1000;
 
         function resizeBg() {
             cw = window.innerWidth;
@@ -228,128 +230,337 @@ document.addEventListener("DOMContentLoaded", () => {
         resizeBg();
 
         window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            targetMouseX = e.clientX;
+            targetMouseY = e.clientY;
         });
 
-        // Add Parallax Stars
-        const stars = [];
-        for (let i = 0; i < 150; i++) {
-            stars.push({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight * 5, // Spread vertically
-                z: Math.random() * 2,
-                speed: Math.random() * 0.2 + 0.05
+        window.addEventListener('mouseleave', () => {
+            targetMouseX = -1000;
+            targetMouseY = -1000;
+        });
+
+        const elements = [];
+        const colors = [
+            'rgba(147, 51, 234, 0.8)', // Purple
+            'rgba(59, 130, 246, 0.8)', // Blue
+            'rgba(236, 72, 153, 0.8)', // Pink
+            'rgba(0, 255, 255, 0.8)'   // Cyan
+        ];
+
+        // 1. Cards
+        for (let i = 0; i < 7; i++) {
+            elements.push({
+                type: 'card',
+                x: Math.random() * cw,
+                y: Math.random() * ch,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 30 + 50,
+                mass: 2,
+                z: Math.random() * 0.6 + 0.4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: Math.random() * Math.PI * 2,
+                vRot: (Math.random() - 0.5) * 0.01
             });
         }
 
-        const spacing = 50; 
+        // 2. Rings / Icons
+        for (let i = 0; i < 15; i++) {
+            elements.push({
+                type: Math.random() > 0.5 ? 'ring' : 'poly',
+                x: Math.random() * cw,
+                y: Math.random() * ch,
+                vx: (Math.random() - 0.5) * 1,
+                vy: (Math.random() - 0.5) * 1,
+                radius: Math.random() * 15 + 15,
+                mass: 1,
+                z: Math.random() * 0.8 + 0.2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: Math.random() * Math.PI * 2,
+                vRot: (Math.random() - 0.5) * 0.03
+            });
+        }
 
-        function renderGrid() {
+        // 3. Particles
+        for (let i = 0; i < 60; i++) {
+            elements.push({
+                type: 'particle',
+                x: Math.random() * cw,
+                y: Math.random() * ch,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5,
+                radius: Math.random() * 2 + 1,
+                mass: 0.1,
+                z: Math.random() * 1 + 0.1,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: 0,
+                vRot: 0
+            });
+        }
+
+        function roundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        let lastScrollY = window.scrollY;
+
+        function updatePhysics() {
+            mouseX += (targetMouseX - mouseX) * 0.08;
+            mouseY += (targetMouseY - mouseY) * 0.08;
+
+            let scrollY = window.scrollY;
+            let scrollDelta = scrollY - lastScrollY;
+            lastScrollY = scrollY;
+
+            const friction = 0.995;
+            
+            for (let i = 0; i < elements.length; i++) {
+                let el = elements[i];
+
+                el.x += el.vx;
+                el.y += el.vy;
+                el.y -= scrollDelta * el.z * 0.6; // Scroll parallax physical application
+                el.rotation += el.vRot;
+
+                el.vx *= friction;
+                el.vy *= friction;
+
+                // Maintain some base movement
+                if (Math.abs(el.vx) < 0.2 && Math.abs(el.vy) < 0.2) {
+                    el.vx += (Math.random() - 0.5) * 0.05;
+                    el.vy += (Math.random() - 0.5) * 0.05;
+                }
+
+                // Physical Wrap
+                if (el.x < -200) el.x += cw + 400;
+                if (el.x > cw + 200) el.x -= cw + 400;
+                if (el.y < -300) el.y += ch + 600;
+                if (el.y > ch + 300) el.y -= ch + 600;
+
+                // Mouse Repulsion
+                let dxMouse = el.x - mouseX;
+                let dyMouse = el.y - mouseY;
+                let distMouseSq = dxMouse * dxMouse + dyMouse * dyMouse;
+                let repelRadius = 300 * Math.max(0.2, el.z); 
+
+                if (distMouseSq < repelRadius * repelRadius && targetMouseX > -500) {
+                    let distMouse = Math.sqrt(distMouseSq);
+                    if(distMouse === 0) distMouse = 0.01;
+                    let force = (repelRadius - distMouse) / repelRadius;
+                    let accel = force * 0.8 / el.mass;
+                    el.vx += (dxMouse / distMouse) * accel;
+                    el.vy += (dyMouse / distMouse) * accel;
+                }
+
+                // Collisions (only between larger elements for perf, ignore particles)
+                if (el.type !== 'particle') {
+                    for (let j = i + 1; j < elements.length; j++) {
+                        let el2 = elements[j];
+                        if (el2.type === 'particle') continue;
+                        
+                        let dx = el2.x - el.x;
+                        let dy = el2.y - el.y;
+                        let distSq = dx * dx + dy * dy;
+                        let minDist = (el.radius + el2.radius) * 0.85;
+
+                        if (distSq < minDist * minDist) {
+                            let dist = Math.sqrt(distSq);
+                            if (dist === 0) dist = 0.01;
+                            let overlap = minDist - dist;
+                            let nx = dx / dist;
+                            let ny = dy / dist;
+
+                            let separationX = nx * (overlap / 2);
+                            let separationY = ny * (overlap / 2);
+                            
+                            el.x -= separationX;
+                            el.y -= separationY;
+                            el2.x += separationX;
+                            el2.y += separationY;
+
+                            let kx = (el.vx - el2.vx);
+                            let ky = (el.vy - el2.vy);
+                            let p = 2 * (nx * kx + ny * ky) / (el.mass + el2.mass);
+                            
+                            el.vx -= p * el2.mass * nx * 0.4;
+                            el.vy -= p * el2.mass * ny * 0.4;
+                            el2.vx += p * el.mass * nx * 0.4;
+                            el2.vy += p * el.mass * ny * 0.4;
+                            
+                            el.vRot += (Math.random() - 0.5) * 0.02;
+                            el2.vRot += (Math.random() - 0.5) * 0.02;
+                        }
+                    }
+                }
+            }
+        }
+
+        function renderScene() {
             ctx.clearRect(0, 0, cw, ch);
+            updatePhysics();
+
+            let scrollY = window.scrollY;
+
+            // Subtle Background Grid
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+            ctx.lineWidth = 1;
+            const spacing = 60;
             
-            // Draw flowing wave mesh
-            time += 0.02;
-            const scrollY = window.scrollY;
-            
-            // Draw background stars
-            ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
-            stars.forEach((star) => {
-                // Modulo math for infinite starfield wrapping
-                let py = (star.y - (scrollY * star.speed)) % ch;
-                if (py < 0) py += ch;
+            let gridOffsetX = (mouseX - cw/2) * 0.01;
+            let gridOffsetY = (mouseY - ch/2) * 0.01 - (scrollY * 0.05) % spacing;
+
+            ctx.beginPath();
+            for (let x = gridOffsetX % spacing; x < cw; x += spacing) {
+                if (x > 0) { ctx.moveTo(x, 0); ctx.lineTo(x, ch); }
+            }
+            for (let y = gridOffsetY % spacing; y < ch; y += spacing) {
+                if (y > 0) { ctx.moveTo(0, y); ctx.lineTo(cw, y); }
+            }
+            ctx.stroke();
+
+            // Render Back to Front
+            elements.sort((a,b) => a.z - b.z).forEach(el => {
+                ctx.save();
                 
-                ctx.beginPath();
-                ctx.arc(star.x, py, star.z, 0, Math.PI * 2);
-                ctx.fill();
+                // Visual Parallax Translation
+                let px = el.x - (mouseX - cw/2) * (el.z * 0.05);
+                let py = el.y - (mouseY - ch/2) * (el.z * 0.05);
+
+                ctx.translate(px, py);
+                ctx.scale(el.z, el.z);
+                ctx.rotate(el.rotation);
+                
+                ctx.globalAlpha = Math.max(0.15, el.z);
+
+                if (el.type === 'particle') {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, el.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = el.color;
+                    ctx.shadowColor = el.color;
+                    ctx.shadowBlur = 10;
+                    ctx.fill();
+                } else if (el.type === 'card') {
+                    let w = el.radius * 1.5;
+                    let h = el.radius * 2;
+                    
+                    // Shadow / Glow
+                    ctx.shadowColor = el.color.replace('0.8', '0.3');
+                    ctx.shadowBlur = 40 * el.z;
+                    
+                    // Glass Card Base
+                    ctx.fillStyle = 'rgba(26, 26, 26, 0.6)';
+                    roundRect(ctx, -w/2, -h/2, w, h, 15);
+                    ctx.fill();
+                    
+                    ctx.shadowBlur = 0; // Turn off shadow for inner drawing
+                    
+                    // Glass highlight
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    
+                    // Mock UI Elements inside Card - Soft gradients
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+                    // Header rect
+                    roundRect(ctx, -w/2 + 15, -h/2 + 15, w - 30, 20, 6);
+                    ctx.fill();
+                    // Lines
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+                    roundRect(ctx, -w/2 + 15, -h/2 + 50, w * 0.7, 8, 4);
+                    ctx.fill();
+                    roundRect(ctx, -w/2 + 15, -h/2 + 65, w * 0.5, 8, 4);
+                    ctx.fill();
+                    
+                    // Accent color block
+                    ctx.fillStyle = el.color.replace('0.8', '0.5');
+                    roundRect(ctx, -w/2 + 15, h/2 - 30, w - 30, 15, 6);
+                    ctx.fill();
+                    
+                } else if (el.type === 'ring') {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, el.radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = el.color;
+                    ctx.lineWidth = 3;
+                    ctx.shadowColor = el.color;
+                    ctx.shadowBlur = 15;
+                    ctx.stroke();
+                    
+                    // Inner geometric details
+                    ctx.beginPath();
+                    ctx.arc(0, 0, el.radius * 0.7, 0, Math.PI * 0.5);
+                    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                } else if (el.type === 'poly') {
+                    // Draw a futuristic diamond
+                    ctx.beginPath();
+                    ctx.moveTo(0, -el.radius);
+                    ctx.lineTo(el.radius * 0.7, 0);
+                    ctx.lineTo(0, el.radius);
+                    ctx.lineTo(-el.radius * 0.7, 0);
+                    ctx.closePath();
+                    
+                    ctx.fillStyle = el.color.replace('0.8', '0.08');
+                    ctx.fill();
+                    
+                    ctx.strokeStyle = el.color.replace('0.8', '0.6');
+                    ctx.lineWidth = 2;
+                    ctx.shadowColor = el.color;
+                    ctx.shadowBlur = 20;
+                    ctx.stroke();
+                    
+                    // Center geometric dot
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 3, 0, Math.PI*2);
+                    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                    ctx.fill();
+                }
+
+                ctx.restore();
             });
 
-            const cols = Math.ceil(cw / spacing) + 2;
-            const rows = Math.ceil(ch / spacing) + 3; // +3 for vertical scrolling buffer
-
-            const nodes = [];
-            for (let i = 0; i < cols; i++) {
-                nodes[i] = [];
-                for (let j = 0; j < rows; j++) {
-                    let bx = (i * spacing) - spacing;
-                    
-                    // Shift rows based on scroll for infinite parallax grid
-                    let scrollOffset = (scrollY * 0.15) % spacing;
-                    let by = (j * spacing) - spacing - scrollOffset;
-
-                    // Compute organic wave
-                    let waveSeedX = i * 0.2 + time;
-                    let waveSeedY = j * 0.3 + time + (scrollY * 0.001);
-                    let wave = Math.sin(waveSeedX) * Math.cos(waveSeedY) * 40;
-                    
-                    let realY = by + wave;
-
-                    // Mouse Interaction (Distortion + Glow)
-                    let dx = mouseX - bx;
-                    let dy = mouseY - realY;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
-                    
-                    // Repel nodes outward from cursor smoothly
-                    let distortion = Math.max(0, 200 - dist) / 200; 
-                    let nx = bx - (dx * distortion * 0.5); 
-                    let ny = realY - (dy * distortion * 0.5);
-                    
-                    nodes[i][j] = { x: nx, y: ny, dist };
-                }
-            }
-
-            // Draw glowing connections
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    let node = nodes[i][j];
-                    if (i < cols - 1) drawLine(node, nodes[i+1][j]);
-                    if (j < rows - 1) drawLine(node, nodes[i][j+1]);
-                }
-            }
-
-            function drawLine(n1, n2) {
-                // Minimum distance of either point to the cursor determines line glow
-                let glowDist = Math.min(n1.dist, n2.dist);
-                
-                // Base minimal premium style
-                let opacity = 0.06;
-                let color = `rgba(130, 80, 230, ${opacity})`; // deep tech purple
-                let width = 1;
-
-                // Mouse hover proximity glow logic
-                if (glowDist < 250) {
-                    let intensity = 1 - (glowDist / 250);
-                    // Fade into pink/blue core
-                    opacity = 0.06 + (intensity * 0.6);
-                    width = 1 + intensity * 1.5;
-                    
-                    // Mix from Purple (130, 80, 230) to Hot Pink (236, 72, 153) to Cyan (0, 255, 255)
-                    let r = Math.floor(130 + (intensity * 106)); 
-                    let g = Math.floor(80 - (intensity * 8)); 
-                    let b = Math.floor(230 - (intensity * 77)); 
-                    
-                    color = `rgba(${r}, ${g}, ${b}, ${opacity})`;
-                }
-
-                ctx.beginPath();
-                ctx.moveTo(n1.x, n1.y);
-                ctx.lineTo(n2.x, n2.y);
-                ctx.strokeStyle = color;
-                ctx.lineWidth = width;
-                
-                // Pure HTML5 Canvas neon glow
-                if (glowDist < 180) {
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = color;
-                } else {
-                    ctx.shadowBlur = 0;
-                }
-                
-                ctx.stroke();
-            }
-
-            requestAnimationFrame(renderGrid);
+            requestAnimationFrame(renderScene);
         }
-        renderGrid();
+        renderScene();
     }
+
+    // ==========================================
+    // 6. NAVBAR ACTIVE STATE HIGHLIGHTING
+    // ==========================================
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    const updateActiveNav = () => {
+        let current = "";
+        const scrollY = window.scrollY;
+
+        sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            // Add a 200px offset to trigger earlier when scrolling down
+            if (scrollY >= sectionTop - 200) {
+                current = section.getAttribute("id");
+            }
+        });
+
+        navLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${current}`) {
+                link.classList.add("active");
+            }
+        });
+    };
+
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
+    updateActiveNav(); // Initial call
 });

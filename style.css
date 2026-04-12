@@ -13,6 +13,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -757,4 +761,58 @@ body {
 
 .back-to-top:hover {
     color: white;
+}
+
+/* GLASSMORPHISM HEADER */
+.glass-header {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(25, 25, 25, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    z-index: 1000;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .glass-header {
+        width: 90%;
+        padding: 0.5rem;
+        top: 15px;
+    }
+    .nav-links {
+        gap: 0.5rem;
+        justify-content: space-around;
+        width: 100%;
+    }
+    .nav-link {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
 }
