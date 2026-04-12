@@ -74,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     const section1 = document.getElementById("section-1");
     const section2 = document.getElementById("section-2");
-    const section3 = document.getElementById("section-3");
 
     // Math function to interpolate smoothly between defined values
     const mapRange = (val, inMin, inMax, outMin, outMax) => {
@@ -87,44 +86,40 @@ document.addEventListener("DOMContentLoaded", () => {
         // Animation helper for clean Parallax logic
         const computeSection = (prog, inStart, inEnd, outStart, outEnd, axis, dir) => {
             let op = 0;
-            let trans = dir * 100;
+            let trans = dir * 50; // Use 50px for a soft cinematic upward motion
             
             if (prog > inStart && prog < inEnd) {
                 op = mapRange(prog, inStart, inEnd, 0, 1);
-                trans = mapRange(prog, inStart, inEnd, dir * 100, 0);
+                trans = mapRange(prog, inStart, inEnd, dir * 50, 0);
             } else if (prog >= inEnd && prog <= outStart) {
                 op = 1;
                 trans = 0;
             } else if (prog > outStart && prog < outEnd) {
                 op = mapRange(prog, outStart, outEnd, 1, 0);
-                trans = mapRange(prog, outStart, outEnd, 0, -dir * 100);
+                trans = mapRange(prog, outStart, outEnd, 0, -dir * 50);
             } else if (prog <= inStart) {
                 op = 0;
-                trans = dir * 100;
+                trans = dir * 50;
             } else {
                 op = 0;
-                trans = -dir * 100;
+                trans = -dir * 50;
             }
             return { opacity: op, transform: `${axis}(${trans}px)` };
         };
 
-        // Section 1 (Center): 20% scroll
-        // In: 5%-15%, Peak holding: 15%-25%, Out: 25%-35%
-        const s1 = computeSection(progress, 0.05, 0.15, 0.25, 0.35, 'translateY', 1);
-        section1.style.opacity = s1.opacity;
-        section1.style.transform = s1.transform;
+        // Section 1 (Aakanksha, UI/UX Designer): Appears at 25%, fades out and disappears after 50%
+        const s1 = computeSection(progress, 0.25, 0.35, 0.40, 0.50, 'translateY', 1);
+        if (section1) {
+            section1.style.opacity = s1.opacity;
+            section1.style.transform = s1.transform;
+        }
 
-        // Section 2 (Left): 40% scroll
-        // In: 25%-35%, Peak holding: 35%-45%, Out: 45%-55%
-        const s2 = computeSection(progress, 0.25, 0.35, 0.45, 0.55, 'translateX', -1);
-        section2.style.opacity = s2.opacity;
-        section2.style.transform = s2.transform;
-
-        // Section 3 (Right): 80% scroll
-        // In: 65%-75%, Peak holding: 75%-85%, Out: 85%-95%
-        const s3 = computeSection(progress, 0.65, 0.75, 0.85, 0.95, 'translateX', 1);
-        section3.style.opacity = s3.opacity;
-        section3.style.transform = s3.transform;
+        // Section 2 (Designing Future Experiences): Appears at 60%, fades out and disappears after 90%
+        const s2 = computeSection(progress, 0.60, 0.70, 0.80, 0.90, 'translateY', 1);
+        if (section2) {
+            section2.style.opacity = s2.opacity;
+            section2.style.transform = s2.transform;
+        }
     };
 
     // Setup initial overlay placements
