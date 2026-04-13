@@ -406,23 +406,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             let scrollY = window.scrollY;
 
-            // Subtle Background Grid
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
-            ctx.lineWidth = 1;
-            const spacing = 60;
-            
-            let gridOffsetX = (mouseX - cw/2) * 0.01;
-            let gridOffsetY = (mouseY - ch/2) * 0.01 - (scrollY * 0.05) % spacing;
-
-            ctx.beginPath();
-            for (let x = gridOffsetX % spacing; x < cw; x += spacing) {
-                if (x > 0) { ctx.moveTo(x, 0); ctx.lineTo(x, ch); }
-            }
-            for (let y = gridOffsetY % spacing; y < ch; y += spacing) {
-                if (y > 0) { ctx.moveTo(0, y); ctx.lineTo(cw, y); }
-            }
-            ctx.stroke();
-
             // Render Back to Front
             elements.sort((a,b) => a.z - b.z).forEach(el => {
                 ctx.save();
